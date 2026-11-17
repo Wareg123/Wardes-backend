@@ -1,0 +1,7 @@
+{
+  "require": {
+    "laravel/sanctum": "^4.0",
+    "kreait/laravel-firebase": "^5.0"
+  },
+  "note": "Jalankan composer require laravel/sanctum kreait/laravel-firebase di project Laravel."
+}
