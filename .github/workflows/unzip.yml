@@ -1,0 +1,31 @@
+
+name: Extract WARDES Backend
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract backend ZIP
+        run: |
+          mkdir -p /tmp/wardes
+          unzip -o wardes-backend-laravel11.zip -d /tmp/wardes
+          cp -a /tmp/wardes/. .
+          rm wardes-backend-laravel11.zip
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Extract WARDES backend source"
+          git push
