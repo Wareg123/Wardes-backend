@@ -38,7 +38,7 @@ jobs:
 
       - name: Install WARDES dependencies
         run: |
-          composer require laravel/sanctum:^4.0 kreait/laravel-firebase:^5.0 --no-interaction
+          composer require laravel/sanctum:^4.0 kreait/laravel-firebase:^7.2 --no-interaction
 
       - name: Save Laravel project
         run: |
