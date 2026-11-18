@@ -1,0 +1,49 @@
+
+name: Setup Laravel 11 WARDES
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, openssl, tokenizer, xml, ctype, curl, fileinfo
+          tools: composer
+
+      - name: Create Laravel 11 project
+        run: |
+          composer create-project laravel/laravel:^11.0 /tmp/wardes-laravel --no-interaction
+          cp -a /tmp/wardes-laravel/. .
+
+      - name: Merge WARDES source
+        run: |
+          cp -a wardes-backend/app/. app/
+          cp -a wardes-backend/bootstrap/. bootstrap/
+          cp -a wardes-backend/config/. config/
+          cp -a wardes-backend/database/. database/
+          cp -a wardes-backend/routes/. routes/
+          cp wardes-backend/.env.example .env.example
+
+      - name: Install WARDES dependencies
+        run: |
+          composer require laravel/sanctum:^4.0 kreait/laravel-firebase:^5.0 --no-interaction
+
+      - name: Save Laravel project
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Build Laravel 11 WARDES project"
+          git push
